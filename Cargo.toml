@@ -3,6 +3,7 @@ name = "romkana"
 version = "0.1.0"
 edition = "2024"
 readme = "README.md"
+authors = ["lillian0x1a"]
 
 [dependencies]
 crossterm = "0.27"
