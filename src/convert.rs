@@ -28,28 +28,31 @@ impl RomKana {
     
     pub fn convert(&self, input: &str) -> String {
         let mut result = String::new();
-        let mut prev_output = String::new();
+        let mut buffer = String::new();
         let input_chars: Vec<char> = input.chars().collect();
         let mut i = 0;
 
+        let max_key_len = self.table.keys()
+            .map(|k| k.chars().count()).max().unwrap_or(0);
         while i < input_chars.len() {
             let mut matched = false;
-            let mut longest_match = 0;
+            let mut match_len = 0;
             let mut replacement = String::new();
             let mut next_output = String::new();
 
-            for j in (i+1..=input_chars.len()).rev() {
-                let key: String = if prev_output.is_empty() {
+            let max_j = (i + max_key_len).min(input_chars.len());
+            for j in (i+1..=max_j).rev() {
+                let key: String = if buffer.is_empty() {
                     input_chars[i..j].iter().collect()
                 } else {
-                    let mut s = prev_output.clone();
+                    let mut s = buffer.clone();
                     s.extend(input_chars[i..j].iter());
                     s
                 };
 
                 if let Some((output, next)) = self.table.get(&key) {
                     matched = true;
-                    longest_match = j - i;
+                    match_len = j - i;
                     replacement = output.clone();
                     next_output = next.clone();
                     break;
@@ -58,21 +61,20 @@ impl RomKana {
 
             if matched {
                 result.push_str(&replacement);
-                prev_output = next_output;
-                i += longest_match;
+                buffer = next_output;
+                i += match_len;
             } else {
-                if !prev_output.is_empty() {
-                    result.push_str(&prev_output);
-                    prev_output.clear();
+                if !buffer.is_empty() {
+                    result.push_str(&buffer);
+                    buffer.clear();
                 } else {
                     result.push(input_chars[i]);
                     i += 1;
                 }
             }
-
-            if !prev_output.is_empty() {
-                result.push_str(&prev_output);
-            }
+        }
+        if !buffer.is_empty() {
+            result.push_str(&buffer);
         }
         result
     }
