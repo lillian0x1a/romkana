@@ -68,7 +68,8 @@ assert_eq!(engine.convert("konnichiha"), "こんにちは");
 assert_eq!(engine.convert("arigatou"), "ありがとう");
 ```
 
-### 注意点
+## 注意点
 - CSV ファイルは UTF-8 で保存してください
 - ファイルパスが間違っているとエラーになります
 - CLI は crossterm を使っているため、ターミナルでのみ動作します
+- ライブラリの依存はcsvのみです
