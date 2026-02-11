@@ -4,6 +4,10 @@ version = "0.1.1"
 edition = "2024"
 readme = "README.md"
 authors = ["lillian0x1a"]
+description = "Convert romaji to hiragana in Rust, with real-time CLI input and custom CSV mapping support."
+repository = "https://github.com/lillian0x1a/romkana"
+documentation = "https://github.com/lillian0x1a/romkana/blob/main/README.md"
+license = "MIT OR Apache-2.0"
 
 [dependencies]
 crossterm = "0.27"
